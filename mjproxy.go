@@ -222,7 +222,7 @@ func proxy(w http.ResponseWriter, r *http.Request) {
 				HostsContainer.m.RLock()
 
 				hostInfo, ok := HostsContainer.Hosts[string(hostHashStr)]
-				if ok && hostInfo.LastTimeout.Add(TimeOutThrotling * time.Second).After(time.Now()) {
+				if ok && hostInfo.LastTimeout.Add(TimeOutThrotling*time.Second).After(time.Now()) {
 					SkipCount.m.Lock()
 					SkipCount.Count++
 					//log.Println(reqHashStr, ` Skip `, request.Url, SkipCount.Count)
