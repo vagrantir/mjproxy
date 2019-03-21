@@ -103,8 +103,6 @@ var HostsContainer struct {
 	Hosts map[string]HostState `json: hosts`
 }
 
-var tasksChan = make(chan []byte, 50000) // why 50000?
-
 func main() {
 	HostsContainer.Hosts = make(map[string]HostState)
 
@@ -140,12 +138,6 @@ func proxy(w http.ResponseWriter, r *http.Request) {
 	//log.Println("Proxy started===========================================================================")
 	w.Header().Set("Content-Type", "application/json")
 	//log.Println("Handle request", r.URL, len(tasksChan), cap(tasksChan))
-
-	//if len(tasksChan) == cap(tasksChan) {
-	//	w.Write([]byte("Service is overloaded"))
-	//	//log.Println("Service is overloaded")
-	//	return
-	//}
 
 	requestBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
