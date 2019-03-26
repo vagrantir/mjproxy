@@ -109,6 +109,9 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", proxy).Methods("POST").HeadersRegexp("Content-Type", "application/(json|javascript)")
 	r.HandleFunc("/stat", stat)
+	r.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+	r.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	r.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 	r.PathPrefix("/debug/pprof/").HandlerFunc(pprof.Index)
 
 	server := &http.Server{
@@ -176,6 +179,8 @@ func proxy(w http.ResponseWriter, r *http.Request) {
 				//log.Println(`Send request to requestChan`, requestItem)
 				requestChan <- requestItem
 			}
+
+			//TODO: try to replace with Chan
 			i := 0
 			for {
 				time.Sleep(1 * time.Millisecond)
